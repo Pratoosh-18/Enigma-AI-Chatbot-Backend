@@ -1,15 +1,16 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { DB_NAME } from "../../constants.js"
 
 dotenv.config()
 
-const connectdb = async () => { 
+const connectDB = async () => {
     try{
-        await mongoose.connect(`${process.env.MONGO_URI}/EnigmaV3`)
-        console.log("You are connected to the Database")
+        await mongoose.connect(`${process.env.MONGO_URI}/${DB_NAME}`)
+        console.log("You are connected to the database !")
     }catch{
-        console.log("Database connection error")
+        console.log("DB connection error !!")
     }
 }
 
-export default connectdb
+export default connectDB
