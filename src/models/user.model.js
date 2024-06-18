@@ -8,6 +8,9 @@ const historySchema = new Schema({
     },
     response: {
         type: String,
+    },
+    searchTime:{
+        type: String,
     }
 })
 
@@ -52,7 +55,7 @@ userSchema.methods.generateAccessToken = function () {
         username: this.username
     },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: '10m' });
+        { expiresIn: '30m' });
 }
 
 userSchema.methods.generateRefreshToken = function () {
