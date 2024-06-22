@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken"
 import { User } from "../models/user.model.js"
 import { ApiError } from "../utils/ApiError.js"
+import { asyncHandler } from "../utils/asyncHandler.js"
 
-export const verifyJWT = async (req,res,next) => {
+export const verifyJWT = asyncHandler( async (req,_,next) => {
     try {
         const token = req.cookies?.accessToken
         if(!token){
@@ -14,6 +15,6 @@ export const verifyJWT = async (req,res,next) => {
         req.user = user
         next()
     } catch (error) {
-        throw new ApiError(401, "JWT verification error")
+        throw new ApiError(401, "There is no active user")
     }
-}
+})

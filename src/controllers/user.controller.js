@@ -1,6 +1,7 @@
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
     const user = await User.findById(userId)
@@ -13,24 +14,30 @@ const generateAccessAndRefreshTokens = async (userId) => {
     return { accessToken, refreshToken }
 }
 
-const registerUser = async (req, res) => {
+const registerUser = asyncHandler( async (req, res) => {
 
     const { username, email, password } = req.body
 
     if (!username || !email || !password) {
         throw new ApiError(401, "All the fields are required")
     }
-
-    const user = await User.create({
-        username, email, password
-    })
+    let user = {};
+    
+    try {
+        user = await User.create({
+            username, email, password
+        })
+    } catch (error) {
+        console.log("An error occured !! ")
+        throw new ApiError(410, 'User already registered');
+    }
 
     const createdUser = await User.findById(user._id)
 
     return res.status(200).json({ createdUser })
-}
+})
 
-const loginUser = async (req, res) => {
+const loginUser = asyncHandler( async (req, res) => {
     const { email, password } = req.body
     const user = await User.findOne({ email })
 
@@ -55,9 +62,9 @@ const loginUser = async (req, res) => {
         .cookie("accessToken", accessToken, options)
         .cookie("refreshToken", refreshToken, options)
         .json({ updatedUser })
-}
+})
 
-const logoutUser = async (req, res) => {
+const logoutUser = asyncHandler( async (req, res) => {
     const filter = { _id: req.user?._id }
 
     await User.updateOne(
@@ -75,17 +82,16 @@ const logoutUser = async (req, res) => {
     const updatedUser = await User.findById(req.user?._id)
     return res.status(200)
         .json({ updatedUser })
-}
+})
 
-const getCurrentUser = async (req, res) => {
+const getCurrentUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user?._id)
-    // console.log(user)
 
     res.status(200)
         .json({ user })
-}
+})
 
-const handlePrompt = async (req, res) => {
+const handlePrompt = asyncHandler(async (req, res) => {
     const { prompt, response } = req.body
     const searchTime = new Date().toLocaleTimeString();
 
@@ -106,6 +112,6 @@ const handlePrompt = async (req, res) => {
     const updatedUser = await User.findById(req.user?._id)
     res.status(200)
         .json({ updatedUser })
-}
+})
 
 export { registerUser, loginUser, logoutUser, getCurrentUser, handlePrompt }

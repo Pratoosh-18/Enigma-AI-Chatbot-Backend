@@ -55,7 +55,7 @@ userSchema.methods.generateAccessToken = function () {
         username: this.username
     },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: '30m' });
+        { expiresIn: '20m' });
 }
 
 userSchema.methods.generateRefreshToken = function () {
