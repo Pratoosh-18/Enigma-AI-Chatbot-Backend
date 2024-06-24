@@ -54,9 +54,12 @@ const loginUser = asyncHandler( async (req, res) => {
     const updatedUser = await User.findById(user._id).select("-password")
 
     const options = {
-        httpOnly: true,
-        secure: true
-    }
+        httpOnly: true,      
+        secure: false,       
+        sameSite: 'Lax',    
+        maxAge: 24 * 60 * 60 * 1000
+    };
+    // console.log(accessToken,refreshToken)
 
     return res.status(200)
         .cookie("accessToken", accessToken, options)

@@ -7,9 +7,9 @@ export const verifyJWT = asyncHandler( async (req,_,next) => {
     try {
         const token = req.cookies?.accessToken
         console.log(token)
-        if(!token){
-            throw new ApiError(401, "Token not found")
-        }
+        // if(token===undefined){
+        //     throw new ApiError(401, "Token not found")
+        // }
         const decodedToken = jwt.verify(token , process.env.ACCESS_TOKEN_SECRET)
         const user = await User.findById(decodedToken?._id).select("-password")
     
