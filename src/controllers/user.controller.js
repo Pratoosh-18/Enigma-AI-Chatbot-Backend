@@ -64,7 +64,8 @@ const loginUser = asyncHandler( async (req, res) => {
     return res.status(200)
         .cookie("accessToken", accessToken, options)
         .cookie("refreshToken", refreshToken, options)
-        .json({ updatedUser })
+        // .json({ updatedUser })
+        .json({"at":accessToken})
 })
 
 const logoutUser = asyncHandler( async (req, res) => {
@@ -95,6 +96,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 })
 
 const handlePrompt = asyncHandler(async (req, res) => {
+    console.log(req.user)
     const { prompt, response } = req.body
     const searchTime = new Date().toLocaleTimeString();
 
