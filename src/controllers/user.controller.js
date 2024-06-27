@@ -65,7 +65,8 @@ const loginUser = asyncHandler( async (req, res) => {
         .cookie("accessToken", accessToken, options)
         .cookie("refreshToken", refreshToken, options)
         // .json({ updatedUser })
-        .json({"at":accessToken})
+        // .json({"at":accessToken})
+        .json({ updatedUser, at: accessToken });
 })
 
 const logoutUser = asyncHandler( async (req, res) => {
