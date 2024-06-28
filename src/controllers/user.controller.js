@@ -58,14 +58,11 @@ const loginUser = asyncHandler( async (req, res) => {
         secure: false,       
         sameSite: 'Lax',    
         maxAge: 24 * 60 * 60 * 1000
-    };
-    // console.log(accessToken,refreshToken)
+    };[]
 
     return res.status(200)
         .cookie("accessToken", accessToken, options)
         .cookie("refreshToken", refreshToken, options)
-        // .json({ updatedUser })
-        // .json({"at":accessToken})
         .json({ updatedUser, at: accessToken });
 })
 
@@ -97,7 +94,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 })
 
 const handlePrompt = asyncHandler(async (req, res) => {
-    console.log(req.user)
+    // console.log(req.user)
     const { prompt, response } = req.body
     const searchTime = new Date().toLocaleTimeString();
 
